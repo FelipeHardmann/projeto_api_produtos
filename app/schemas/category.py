@@ -12,3 +12,7 @@ class Category(CustomBaseModel):
         if not re.match('^([a-z]|-|_)+$', v):
             raise ValueError('Invalid Slug')
         return v
+
+
+class CategoryOutput(Category):
+    id: int

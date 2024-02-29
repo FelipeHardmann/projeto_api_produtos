@@ -1,4 +1,4 @@
-from app.schemas.product import Product
+from app.schemas.product import Product, ProductInput
 import pytest
 
 
@@ -52,3 +52,26 @@ def test_product_schema_invalid_price():
             price=0,
             stock=100
         )
+
+
+def test_product_input_schema():
+    product = Product(
+            name='Camisa Adidas',
+            slug='camisa-adidas',
+            price=109.9,
+            stock=100
+    )
+    product_input = ProductInput(
+        category_slug='roupa',
+        product=product
+    )
+
+    assert product_input.dict() == {
+        "category_slug": "roupa",
+        "product": {
+            "name": "Camisa Adidas",
+            "slug": "camisa-adidas",
+            "price": 109.9,
+            "stock": 100
+        }
+    }

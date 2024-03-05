@@ -94,3 +94,11 @@ def test_delete_product_non_exist(db_session):
 
     with pytest.raises(HTTPException):
         uc.delete_product(id=1)
+
+
+def test_list_product(db_session, product_on_db):
+    uc = ProductUseCases(db_session=db_session)
+
+    products = uc.list_products()
+
+    assert len(products) == 4

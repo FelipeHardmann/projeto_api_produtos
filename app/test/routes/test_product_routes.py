@@ -81,3 +81,19 @@ def test_update_product_route_invalid_id():
     response = client.put('/product/update/1', json=body)
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_delete_product_route(db_session, products_on_db):
+    response = client.delete(f'/product/delete/{products_on_db.id}')
+
+    assert response.status_code == status.HTTP_200_OK
+
+    product_on_db = db_session.query(ProductModel).all()
+
+    assert len(product_on_db) == 0
+
+
+def test_delete_product_route_invalid_id(db_session, products_on_db):
+    response = client.delete('/product/delete/1')
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND

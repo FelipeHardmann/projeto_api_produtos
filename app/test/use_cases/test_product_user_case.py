@@ -1,5 +1,5 @@
 from app.db.models import Product as ProductModel
-from app.schemas.product import Product
+from app.schemas.product import Product, ProductOutput
 from app.use_cases.product import ProductUseCases
 from fastapi.exceptions import HTTPException
 import pytest
@@ -101,4 +101,10 @@ def test_list_product(db_session, product_on_db):
 
     products = uc.list_products()
 
+    for product in product_on_db:
+        db_session.refresh(product)
+
     assert len(products) == 4
+    assert isinstance(products[0], ProductOutput)
+    assert products[0].name == product_on_db[0].name
+    assert products[0].category.name == product_on_db[0].category.name

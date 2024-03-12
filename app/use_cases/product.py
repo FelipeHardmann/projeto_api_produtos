@@ -59,9 +59,16 @@ class ProductUseCases:
         self.db_session.commit()
 
     def list_products(self):
-        product_on_db = self.db_session.query(ProductModel).all()
+        products_on_db = self.db_session.query(ProductModel).all()
 
-    def _serialize_product(product_on_db: ProductModel):
+        products = [
+            self._serialize_product(product_on_db)
+            for product_on_db in products_on_db
+        ]
+
+        return products
+
+    def _serialize_product(self, product_on_db: ProductModel):
         product_dict = product_on_db.__dict__
         product_dict['category'] = product_on_db.category.__dict__
 

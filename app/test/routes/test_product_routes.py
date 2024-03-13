@@ -118,3 +118,25 @@ def test_list_product_route(product_on_db):
             'slug': product_on_db[0].category.slug
         }
     }
+
+
+def test_list_product_route_with_search(product_on_db):
+    response = client.get('/product/list?search=nike')
+
+    assert response.status_code == status.HTTP_200_OK
+
+    data = response.json()
+
+    assert len(data) == 3
+
+    assert data[0] == {
+        'id': product_on_db[0].id,
+        'name': product_on_db[0].name,
+        'slug': product_on_db[0].slug,
+        'price': product_on_db[0].price,
+        'stock': product_on_db[0].stock,
+        'category': {
+            'name': product_on_db[0].category.name,
+            'slug': product_on_db[0].category.slug
+        }
+    }

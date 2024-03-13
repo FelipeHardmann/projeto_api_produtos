@@ -88,15 +88,15 @@ def product_on_db(db_session):
             category_id=category.id
         ),
         ProductModel(
-            name='Camiseta Nike',
+            name='Camiseta',
             slug='camiseta-nike',
             price=100,
             stock=30,
             category_id=category.id
         ),
         ProductModel(
-            name='Short Nike',
-            slug='short-nike',
+            name='Short',
+            slug='short',
             price=100,
             stock=30,
             category_id=category.id

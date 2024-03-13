@@ -108,3 +108,17 @@ def test_list_product(db_session, product_on_db):
     assert isinstance(products[0], ProductOutput)
     assert products[0].name == product_on_db[0].name
     assert products[0].category.name == product_on_db[0].category.name
+
+
+def test_list_product_with_search(db_session, product_on_db):
+    uc = ProductUseCases(db_session=db_session)
+
+    products = uc.list_products(search='nike')
+
+    for product in product_on_db:
+        db_session.refresh(product)
+
+    assert len(products) == 3
+    assert isinstance(products[0], ProductOutput)
+    assert products[0].name == product_on_db[0].name
+    assert products[0].category.name == product_on_db[0].category.name

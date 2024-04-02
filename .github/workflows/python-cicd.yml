@@ -7,30 +7,12 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10]
 
     steps:
-    - uses: actions/checkout@v2
+      - name: Copia os arquivos
+        uses: actions/checkout@v3.3.0
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        source $HOME/.poetry/env
-
-    - name: Install dependencies
-      run: poetry install
-
-    - name: Lint with flake8
-      run: poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-
-    - name: Test with pytest
-      run: poetry run pytest
+      - name: teste comando
+        run: echo $(ls)

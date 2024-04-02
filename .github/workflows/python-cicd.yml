@@ -14,5 +14,7 @@ jobs:
       - name: Copia os arquivos
         uses: actions/checkout@v3.3.0
 
-      - name: teste comando
-        run: echo $(ls)
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'

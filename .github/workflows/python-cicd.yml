@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   test:
@@ -11,16 +11,22 @@ jobs:
 
     services:
       docker:
-        image: docker:stable-dind 
+        image: docker:stable-dind
+        options: --privileged
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
     - name: Build and run Docker containers
       run: |
-        docker-compose up --build -d  # Subindo os containers em segundo plano
-        docker-compose run app sh -c "pytest"  # Executando os testes
+        docker-compose up --build -d
+        docker-compose run app sh -c "pytest"
 
     - name: Stop Docker containers
-      run: docker-compose down  # Parando os containers após os testes
+      run: docker-compose down

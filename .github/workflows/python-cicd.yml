@@ -1,23 +1,26 @@
-name: Python Package using Poetry
+name: CI
 
-on: 
+on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches:
+      - main 
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      docker:
+        image: docker:stable-dind 
+
     steps:
-      - name: Copia os arquivos
-        uses: actions/checkout@v3.3.0
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: Instalar Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
+    - name: Build and run Docker containers
+      run: |
+        docker-compose up --build -d  # Subindo os containers em segundo plano
+        docker-compose run app sh -c "pytest"  # Executando os testes
 
-      - name: Instalar poetry
-        run: pip install poetry
+    - name: Stop Docker containers
+      run: docker-compose down  # Parando os containers após os testes

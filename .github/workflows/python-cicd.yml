@@ -34,7 +34,7 @@ jobs:
 
     - name: Run tests
       run: |
-        docker-compose exec app sh -c "cd /app && pytest"
+        docker-compose run app sh -c "pytest"
 
     - name: Stop Docker containers
       run: docker-compose down

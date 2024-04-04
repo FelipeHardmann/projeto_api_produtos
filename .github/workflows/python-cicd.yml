@@ -28,7 +28,7 @@ jobs:
 
     - name: Wait for services to be ready
       run: |
-        while ! docker-compose exec -T postgresql pg_isready -q -h postgresql -p 5432 -U postgres; do
+        while ! docker-compose exec -T postgresql pg_isready -q -h postgresql -p 5432 -U postgres && ! docker-compose exec -T postgresql-test pg_isready -q -h postgresql-test -p 5433 -U postgres; do
           sleep 1
         done
 

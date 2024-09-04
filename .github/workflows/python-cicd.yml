@@ -23,10 +23,18 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y docker-compose
 
-    - name: Build and run Docker containers
+    - name: Start PostgreSQL containers
+      run: docker-compose up -d
+
+    - name: Wait for services to be ready
       run: |
-        docker-compose up --build -d
+        while ! docker-compose exec -T postgresql pg_isready -q -h postgresql -p 5432 -U postgres && ! docker-compose exec -T postgresql-test pg_isready -q -h postgresql-test -p 5433 -U postgres; do
+          sleep 1
+        done
+
+    - name: Run tests
+      run: |
         docker-compose run app sh -c "pytest"
 
-    - name: Stop Docker containers
+    - name: Stop PostgreSQL containers
       run: docker-compose down
